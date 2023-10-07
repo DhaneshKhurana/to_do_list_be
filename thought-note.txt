@@ -1,0 +1,26 @@
+Title: To-Do List Back-End Assignment
+
+Summary:
+Hi,
+My name is Dhanesh Khurana. I have developed the REST API for To-Do list. Now I feel confident enough to develop
+REST API for small to medium appliation using javascript and express.
+Now I wish to learn the next level as how to design, layout and deploy API securely for big projects.
+I have used express.js for advnace routing.
+
+/**Updates**/
+-> Now user can choose node-persist and MySql for storing data.
+-> Rather than removing or changing earlier code, I have added on more JS file viz: server_sql.js.
+-> Anyone can easily switch from node-persist to mysql by simply starting the server_sql.js.
+-> The functionality to delete the user has also been added and everything was working flowlessly.
+
+
+Technical Summary:
+This assignment has mainly utilised 3 technlogoies. viz:
+    i) Express.js:
+        To create the endpoints and routes.
+    ii) node-persist:
+        To store and retrieve the information.
+    iii) MySql:
+        To store data relational form.
+
+Thankyou.

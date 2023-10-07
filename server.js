@@ -1,38 +1,41 @@
 import express from "express";
 import store from "node-persist";
+import cors from "cors";
 
-//intialising the storage
-store.init().then(val => console.log("Node persistence storage initialised", val));
-//clearing the storage, whenever server restrats
-store.clear().then("storage cleared");
-
-//initailising express 
+//initailising express
 const app = express();
-
-//initialising express router
 const myRouter = express.Router();
 
-//setting up the middleware, so that every requesgt can be logged
-myRouter.use((req, res)=> console.log("request recieved::", req));
+//intialising the storage
+store.init().then(() => {
+  //clearing the storage, whenever server restrats
+  store.clear().then(console.log("Storage cleared"));
+});
 
 //setting routes for app using express router
+myRouter.get("/", (req, res)=> {res.send("<h1> Wecome to my To-DO App</h1>")});
 
 //endpoint for getting all the tasks
-myRouter.get("/tasks", (req, res)=>{
-    const tasks = store.getItem("tasks");
-    console.log("server: getting tasks", tasks);
-    res.send(tasks);
+myRouter.get("/tasks", async (req, res) => {
+  const tasks = await store.getItem("tasks");
+  console.log("server: tasks got from db::", tasks);
+  res.send(tasks?tasks:[]);
 });
 
 //endpoint for getting all the tasks
-myRouter.get("/addTask", (req, res)=> {
-    const tasks = store.getItem("tasks");
-    const task = req.body();
-    console.log("server: task recieved :: ", task);
-    allTasks = [...tasks, task];
-    console.log("server: tasks after adding :: ", allTasks);
-    store.setItem("tasks", allTasks);
-
+myRouter.post("/addTask", express.json(), async (req, res) => {
+  const tasks = await store.getItem("tasks");
+  const task = req.body;
+  //console.log("server: task to be added :: ", task);
+  const allTasks = tasks?[...tasks, task]:[task];
+  console.log("server: tasks after adding :: ", allTasks);
+  await store.setItem("tasks", allTasks);
+  res.send("Task Successfully added");
 });
 
-app.listen(3030, ()=> console.log("Server started"));
+//setting up the middleware to handle cross-origin requests
+app.use(cors());
+//setting up the middleware to handle incoming requests by the router
+app.use(myRouter);
+//starting the server on port 5050
+app.listen(5050, "localhost",  () => console.log("Server started"));
